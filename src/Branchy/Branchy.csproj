@@ -6,7 +6,7 @@
         <IsPackable>true</IsPackable>
         <PackageId>Branchy</PackageId>
         <Authors>Khalid Abuhakmeh</Authors>
-        <PackageIcon>../../media/Logo.png</PackageIcon>
+        <PackageIconUrl>https://github.com/khalidabuhakmeh/Branchy/raw/main/media/Logo.png</PackageIconUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageTags>Minimal,APIs,web,routing</PackageTags>
         <PackageVersion>0.0.1</PackageVersion>
