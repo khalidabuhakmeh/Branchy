@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <IsPackable>true</IsPackable>
         <PackageId>Branchy</PackageId>
+        <Authors>Khalid Abuhakmeh</Authors>
         <PackageIcon>../../media/Logo.png</PackageIcon>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageTags>Minimal,APIs,web,routing</PackageTags>
