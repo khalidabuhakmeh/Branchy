@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <IsPackable>true</IsPackable>
+        <PackageId>Branchy</PackageId>
+        <PackageIcon>../../media/Logo.png</PackageIcon>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageTags>Minimal,APIs,web,routing</PackageTags>
+        <PackageVersion>0.0.1</PackageVersion>
+        <Description>
+            Allows users to reduce string declarations by providing nested route registrations using ASP.NET Core's minimal APIs. Reduce errors and increase your ability to refactor routes.
+        </Description>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
+    </ItemGroup>
+
+</Project>
