@@ -7,16 +7,17 @@
         <PackageId>Branchy</PackageId>
         <Authors>Khalid Abuhakmeh</Authors>
         <PackageIconUrl>https://github.com/khalidabuhakmeh/Branchy/raw/main/media/Logo.png</PackageIconUrl>
+        <RepositoryUrl>https://github.com/khalidabuhakmeh/branchy</RepositoryUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageTags>Minimal,APIs,web,routing</PackageTags>
-        <PackageVersion>0.0.1</PackageVersion>
+        <PackageVersion>0.0.2</PackageVersion>
         <Description>
             Allows users to reduce string declarations by providing nested route registrations using ASP.NET Core's minimal APIs. Reduce errors and increase your ability to refactor routes.
         </Description>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
+      <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" PrivateAssets="true" />
     </ItemGroup>
 
 </Project>
