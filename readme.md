@@ -39,7 +39,7 @@ app.Path("/", root =>
 });
 ```
 
-## Gotchas
+## Minimal API Gotchas
 
 The new routing approach takes in either a `RequestDelegate` or a `Delegate` that gets implicitly cast. If you are using the OpenAPI swagger gen, be sure to pass your parameters into your delegates, or OpenAPI might not find them (even though your routes may still work).
 
