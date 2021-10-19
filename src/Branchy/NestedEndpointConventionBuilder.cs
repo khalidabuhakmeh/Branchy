@@ -10,6 +10,7 @@ namespace Branchy
     {
         private readonly IEndpointRouteBuilder _app;
         private readonly string _baseRoute;
+        private bool _registeredAnyEndpoints;
 
         internal NestedEndpointConventionBuilder(IEndpointRouteBuilder app, string baseRoute,
             Action<NestedEndpointConventionBuilder> call)
@@ -19,6 +20,28 @@ namespace Branchy
 
             // invoke as we go down the chain, it's fine
             call(this);
+        }
+        
+        private Action<IEndpointConventionBuilder>? MetadataBuilder { get; set; }
+
+        /// <summary>
+        /// Ability to apply metadata once
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
+        public NestedEndpointConventionBuilder Metadata(Action<IEndpointConventionBuilder> builder)
+        {
+            if (_registeredAnyEndpoints)
+                throw new NotSupportedException("define metadata before registering any endpoints");
+            
+            MetadataBuilder = builder;
+            return this;
+        }
+
+        private void ApplyMetadata(IEndpointConventionBuilder endpoint)
+        {
+            _registeredAnyEndpoints = true;
+            MetadataBuilder?.Invoke(endpoint);
         }
 
         /// <summary>
@@ -39,7 +62,9 @@ namespace Branchy
         /// <returns></returns>
         public IEndpointConventionBuilder MapGet(Delegate requestDelegate)
         {
-            return _app.MapGet(_baseRoute, requestDelegate);
+            var endpoint = _app.MapGet(_baseRoute, requestDelegate);
+            ApplyMetadata(endpoint);
+            return endpoint;
         }
 
         /// <summary>
@@ -49,7 +74,9 @@ namespace Branchy
         /// <returns></returns>
         public IEndpointConventionBuilder MapGet(RequestDelegate requestDelegate)
         {
-            return _app.MapGet(_baseRoute, requestDelegate);
+            var endpoint = _app.MapGet(_baseRoute, requestDelegate);
+            ApplyMetadata(endpoint);
+            return endpoint;
         }
 
         /// <summary>
@@ -61,7 +88,9 @@ namespace Branchy
         public IEndpointConventionBuilder MapGet(string pattern, RequestDelegate requestDelegate)
         {
             var route = Combine(pattern);
-            return _app.MapGet(route, requestDelegate);
+            var endpoint = _app.MapGet(route, requestDelegate);
+            ApplyMetadata(endpoint);
+            return endpoint;
         }
 
         /// <summary>
@@ -73,7 +102,9 @@ namespace Branchy
         public IEndpointConventionBuilder MapGet(string pattern, Delegate requestDelegate)
         {
             var route = Combine(pattern);
-            return _app.MapGet(route, requestDelegate);
+            var endpoint = _app.MapGet(route, requestDelegate);
+            ApplyMetadata(endpoint);
+            return endpoint;
         }
 
         /// <summary>
@@ -83,7 +114,9 @@ namespace Branchy
         /// <returns></returns>
         public IEndpointConventionBuilder MapPost(Delegate requestDelegate)
         {
-            return _app.MapPost(_baseRoute, requestDelegate);
+            var endpoint = _app.MapPost(_baseRoute, requestDelegate);
+            ApplyMetadata(endpoint);
+            return endpoint;
         }
 
         /// <summary>
@@ -93,7 +126,9 @@ namespace Branchy
         /// <returns></returns>
         public IEndpointConventionBuilder MapPost(RequestDelegate requestDelegate)
         {
-            return _app.MapPost(_baseRoute, requestDelegate);
+            var endpoint = _app.MapPost(_baseRoute, requestDelegate);
+            ApplyMetadata(endpoint);
+            return endpoint;
         }
 
         /// <summary>
@@ -105,7 +140,9 @@ namespace Branchy
         public IEndpointConventionBuilder MapPost(string pattern, RequestDelegate requestDelegate)
         {
             var route = Combine(pattern);
-            return _app.MapPost(route, requestDelegate);
+            var endpoint = _app.MapPost(route, requestDelegate);
+            ApplyMetadata(endpoint);
+            return endpoint;
         }
 
         /// <summary>
@@ -117,7 +154,9 @@ namespace Branchy
         public IEndpointConventionBuilder MapPost(string pattern, Delegate requestDelegate)
         {
             var route = Combine(pattern);
-            return _app.MapPost(route, requestDelegate);
+            var endpoint = _app.MapPost(route, requestDelegate);
+            ApplyMetadata(endpoint);
+            return endpoint;
         }
 
         /// <summary>
@@ -127,7 +166,9 @@ namespace Branchy
         /// <returns></returns>
         public IEndpointConventionBuilder MapPut(Delegate requestDelegate)
         {
-            return _app.MapPut(_baseRoute, requestDelegate);
+            var endpoint = _app.MapPut(_baseRoute, requestDelegate);
+            ApplyMetadata(endpoint);
+            return endpoint;
         }
 
         /// <summary>
@@ -137,7 +178,9 @@ namespace Branchy
         /// <returns></returns>
         public IEndpointConventionBuilder MapPut(RequestDelegate requestDelegate)
         {
-            return _app.MapPut(_baseRoute, requestDelegate);
+            var endpoint = _app.MapPut(_baseRoute, requestDelegate);
+            ApplyMetadata(endpoint);
+            return endpoint;
         }
 
         /// <summary>
@@ -149,7 +192,9 @@ namespace Branchy
         public IEndpointConventionBuilder MapPut(string pattern, RequestDelegate requestDelegate)
         {
             var route = Combine(pattern);
-            return _app.MapPut(route, requestDelegate);
+            var endpoint = _app.MapPut(route, requestDelegate);
+            ApplyMetadata(endpoint);
+            return endpoint;
         }
 
         /// <summary>
@@ -161,7 +206,9 @@ namespace Branchy
         public IEndpointConventionBuilder MapPut(string pattern, Delegate requestDelegate)
         {
             var route = Combine(pattern);
-            return _app.MapPut(route, requestDelegate);
+            var endpoint = _app.MapPut(route, requestDelegate);
+            ApplyMetadata(endpoint);
+            return endpoint;
         }
 
         /// <summary>
@@ -171,7 +218,9 @@ namespace Branchy
         /// <returns></returns>
         public IEndpointConventionBuilder MapPatch(Delegate requestDelegate)
         {
-            return _app.MapMethods(_baseRoute, new []{ HttpMethods.Patch }, requestDelegate);
+            var endpoint = _app.MapMethods(_baseRoute, new []{ HttpMethods.Patch }, requestDelegate);
+            ApplyMetadata(endpoint);
+            return endpoint;
         }
 
         /// <summary>
@@ -181,7 +230,9 @@ namespace Branchy
         /// <returns></returns>
         public IEndpointConventionBuilder MapPatch(RequestDelegate requestDelegate)
         {
-            return _app.MapMethods(_baseRoute, new []{ HttpMethods.Patch }, requestDelegate);
+            var endpoint = _app.MapMethods(_baseRoute, new []{ HttpMethods.Patch }, requestDelegate);
+            ApplyMetadata(endpoint);
+            return endpoint;
         }
 
         /// <summary>
@@ -193,7 +244,9 @@ namespace Branchy
         public IEndpointConventionBuilder MapPatch(string pattern, RequestDelegate requestDelegate)
         {
             var route = Combine(pattern);
-            return _app.MapMethods(route, new []{ HttpMethods.Patch }, requestDelegate);
+            var endpoint = _app.MapMethods(route, new []{ HttpMethods.Patch }, requestDelegate);
+            ApplyMetadata(endpoint);
+            return endpoint;
         }
 
         /// <summary>
@@ -205,7 +258,9 @@ namespace Branchy
         public IEndpointConventionBuilder MapPatch(string pattern, Delegate requestDelegate)
         {
             var route = Combine(pattern);
-            return _app.MapMethods(_baseRoute, new []{ HttpMethods.Patch }, requestDelegate);
+            var endpoint = _app.MapMethods(route, new []{ HttpMethods.Patch }, requestDelegate);
+            ApplyMetadata(endpoint);
+            return endpoint;
         }
 
         /// <summary>
@@ -215,7 +270,9 @@ namespace Branchy
         /// <returns></returns>
         public IEndpointConventionBuilder MapDelete(Delegate requestDelegate)
         {
-            return _app.MapDelete(_baseRoute, requestDelegate);
+            var endpoint = _app.MapDelete(_baseRoute, requestDelegate);
+            ApplyMetadata(endpoint);
+            return endpoint;
         }
 
         /// <summary>
@@ -225,7 +282,9 @@ namespace Branchy
         /// <returns></returns>
         public IEndpointConventionBuilder MapDelete(RequestDelegate requestDelegate)
         {
-            return _app.MapDelete(_baseRoute, requestDelegate);
+            var endpoint = _app.MapDelete(_baseRoute, requestDelegate);
+            ApplyMetadata(endpoint);
+            return endpoint;
         }
 
         /// <summary>
@@ -237,7 +296,9 @@ namespace Branchy
         public IEndpointConventionBuilder MapDelete(string pattern, RequestDelegate requestDelegate)
         {
             var route = Combine(pattern);
-            return _app.MapDelete(route, requestDelegate);
+            var endpoint = _app.MapDelete(route, requestDelegate);
+            ApplyMetadata(endpoint);
+            return endpoint;
         }
 
         /// <summary>
@@ -249,7 +310,9 @@ namespace Branchy
         public IEndpointConventionBuilder MapDelete(string pattern, Delegate requestDelegate)
         {
             var route = Combine(pattern);
-            return _app.MapDelete(route, requestDelegate);
+            var endpoint = _app.MapDelete(route, requestDelegate);
+            ApplyMetadata(endpoint);
+            return endpoint;
         }
 
         /// <summary>
@@ -260,7 +323,9 @@ namespace Branchy
         /// <returns></returns>
         public IEndpointConventionBuilder MapMethods(IEnumerable<string> methods, RequestDelegate requestDelegate)
         {
-            return _app.MapMethods(_baseRoute, methods, requestDelegate);
+            var endpoint = _app.MapMethods(_baseRoute, methods, requestDelegate);
+            ApplyMetadata(endpoint);
+            return endpoint;
         }
 
         /// <summary>
@@ -271,7 +336,9 @@ namespace Branchy
         /// <returns></returns>
         public IEndpointConventionBuilder MapMethods(IEnumerable<string> methods, Delegate requestDelegate)
         {
-            return _app.MapMethods(_baseRoute, methods, requestDelegate);
+            var endpoint = _app.MapMethods(_baseRoute, methods, requestDelegate);
+            ApplyMetadata(endpoint);
+            return endpoint;
         }
 
         /// <summary>
@@ -284,7 +351,9 @@ namespace Branchy
         public IEndpointConventionBuilder MapMethods(string pattern, IEnumerable<string> methods, RequestDelegate requestDelegate)
         {
             var route = Combine(pattern);
-            return _app.MapMethods(route, methods, requestDelegate);
+            var endpoint = _app.MapMethods(route, methods, requestDelegate);
+            ApplyMetadata(endpoint);
+            return endpoint;
         }
 
         /// <summary>
@@ -297,7 +366,9 @@ namespace Branchy
         public IEndpointConventionBuilder MapMethods(string pattern, IEnumerable<string> methods, Delegate requestDelegate)
         {
             var route = Combine(pattern);
-            return _app.MapMethods(route, methods, requestDelegate);
+            var endpoint = _app.MapMethods(route, methods, requestDelegate);
+            ApplyMetadata(endpoint);
+            return endpoint;
         }
 
         private string Combine(string pattern)
